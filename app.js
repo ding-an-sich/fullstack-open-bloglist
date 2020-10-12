@@ -1,8 +1,8 @@
 const mongoose = require('mongoose')
 const express = require('express')
 const cors = require('cors')
-const blogsRouter = require('./controllers/blogs')
 const config = require('./utils/config')
+const blogsRouter = require('./controllers/blogs')
 
 mongoose.connect(config.MONGODB_URI, {
   useNewUrlParser: true,
