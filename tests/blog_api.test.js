@@ -45,6 +45,25 @@ test('unique identifiers are returned as \'id\'', async () => {
   expect(response.body[0].id).toBeDefined()
 })
 
+test('a blog can be added', async () => {
+  const newBlog = {
+    title: 'I have nothing interesting to say',
+    author: 'vmrc',
+    url: 'www.piadinhasinfames.com.br',
+    likes: 0
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
+
+  const response = await api.get('/api/blogs')
+
+  expect(response.body).toHaveLength(helper.initialBlogs.length + 1)
+})
+
 afterAll(() => {
   mongoose.connection.close()
 })
