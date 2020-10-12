@@ -5,10 +5,10 @@
   "author": "vmrc",
   "license": "MIT",
   "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon index.js",
+    "start": "NODE_ENV=production node index.js",
+    "dev": "NODE_ENV=development nodemon index.js",
     "lint": "eslint .",
-    "test": "jest --verbose"
+    "test": "NODE_ENV=test jest --verbose --runInBand"
   },
   "devDependencies": {
     "eslint": "^7.11.0",
@@ -18,7 +18,8 @@
     "eslint-plugin-react": "^7.21.4",
     "eslint-plugin-react-hooks": "^4.0.0",
     "jest": "^26.5.3",
-    "nodemon": "^2.0.4"
+    "nodemon": "^2.0.4",
+    "supertest": "^5.0.0"
   },
   "dependencies": {
     "cors": "^2.8.5",
