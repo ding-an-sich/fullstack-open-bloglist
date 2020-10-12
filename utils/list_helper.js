@@ -11,10 +11,17 @@ const average = (array) => {
     : array.reduce(reducer, 0) / array.length
 }
 
-const dummy = (blogs) => 1
+const dummy = () => 1
+
+const totalLikes = (blogs) => {
+  const reducer = (sumOfLikes, item) => sumOfLikes + item.likes
+
+  return blogs.reduce(reducer, 0)
+}
 
 module.exports = {
   palindrome,
   average,
-  dummy
+  dummy,
+  totalLikes
 }
