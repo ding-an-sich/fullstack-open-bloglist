@@ -7,7 +7,8 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "test": "jest --verbose"
   },
   "devDependencies": {
     "eslint": "^7.11.0",
@@ -24,5 +25,8 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "mongoose": "^5.10.9"
+  },
+  "jest": {
+    "testEnvironment": "node"
   }
 }
