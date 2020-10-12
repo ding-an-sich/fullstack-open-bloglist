@@ -48,3 +48,29 @@ describe('total likes', () => {
     expect(result).toBe(36)
   })
 })
+
+describe('favorite blog', () => {
+  test('returns the blog with most likes', () => {
+    const result = listHelper.favoriteBlog(blogs)
+
+    expect(result).toEqual({
+      _id: '5a422b3a1b54a676234d17f9', title: 'Canonical string reduction', author: 'Edsger W. Dijkstra', url: 'http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html', likes: 12, __v: 0
+    })
+  })
+
+  test('it works with only one blog', () => {
+    const listWithOneBlog = blogs.slice(0, 1)
+    const result = listHelper.favoriteBlog(listWithOneBlog)
+
+    expect(result).toEqual({
+      _id: '5a422a851b54a676234d17f7', title: 'React patterns', author: 'Michael Chan', url: 'https://reactpatterns.com/', likes: 7, __v: 0
+    })
+  })
+
+  test('it returns 0 when no blogs are present', () => {
+    const emptyBlogList = []
+    const result = listHelper.favoriteBlog(emptyBlogList)
+
+    expect(result).toBe(0)
+  })
+})

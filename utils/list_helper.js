@@ -19,9 +19,16 @@ const totalLikes = (blogs) => {
   return blogs.reduce(reducer, 0)
 }
 
+const favoriteBlog = (blogs) => {
+  const reducer = (blogA, blogB) => (blogA.likes > blogB.likes ? blogA : blogB)
+
+  return blogs.reduce(reducer, 0)
+}
+
 module.exports = {
   palindrome,
   average,
   dummy,
-  totalLikes
+  totalLikes,
+  favoriteBlog
 }
