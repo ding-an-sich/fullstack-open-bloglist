@@ -8,11 +8,25 @@ const api = supertest(app)
 
 beforeEach(async () => {
   await Blog.deleteMany({})
-  let blogObject = new Blog(helper.initialBlogs[0])
-  await blogObject.save()
-  blogObject = new Blog(helper.initialBlogs[1])
-  await blogObject.save()
+
+  const blogObjects = helper.initialBlogs.map((blog) => new Blog(blog))
+  const promises = blogObjects.map((blogObject) => blogObject.save())
+  await Promise.all(promises)
 })
+
+/* Alternative version with for..of loop
+ * Slower but executes each save in order
+ * (not parallelized)
+
+beforeEach(async () => {
+  await Blog.deleteMany({})
+
+  for (const blog of helper.initialBlogs) {
+    const blogObject = new Blog(blog)
+    await blogObject.save()
+  }
+})
+*/
 
 test('blogs are returned as JSON', async () => {
   await api
@@ -21,9 +35,14 @@ test('blogs are returned as JSON', async () => {
     .expect('Content-Type', /application\/json/)
 })
 
-test('there are 2 blogs', async () => {
+test('all the blogs are returned', async () => {
   const response = await api.get('/api/blogs')
-  expect(response.body).toHaveLength(2)
+  expect(response.body).toHaveLength(helper.initialBlogs.length)
+})
+
+test('unique identifiers are returned as \'id\'', async () => {
+  const response = await api.get('/api/blogs')
+  expect(response.body[0].id).toBeDefined()
 })
 
 afterAll(() => {
