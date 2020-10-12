@@ -1,3 +1,5 @@
+const _ = require('lodash')
+
 const palindrome = (string) => string
   .split('')
   .reverse()
@@ -25,10 +27,21 @@ const favoriteBlog = (blogs) => {
   return blogs.reduce(reducer, 0)
 }
 
+const mostBlogs = (blogs) => {
+  const authorList = _.countBy(blogs, 'author')
+  const reducer = (keyA, keyB) => (authorList[keyA] > authorList[keyB] ? keyA : keyB)
+  const mostProlificAuthor = Object.keys(authorList).reduce(reducer, 0)
+  if (mostProlificAuthor === 0) {
+    return mostProlificAuthor
+  }
+  return { author: mostProlificAuthor, blogs: authorList[mostProlificAuthor] }
+}
+
 module.exports = {
   palindrome,
   average,
   dummy,
   totalLikes,
-  favoriteBlog
+  favoriteBlog,
+  mostBlogs
 }

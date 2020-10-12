@@ -74,3 +74,31 @@ describe('favorite blog', () => {
     expect(result).toBe(0)
   })
 })
+
+describe('most prolific author', () => {
+  test('returns the author with most blogs', () => {
+    const result = listHelper.mostBlogs(blogs)
+
+    expect(result).toEqual({
+      author: 'Robert C. Martin',
+      blogs: 3
+    })
+  })
+
+  test('it works with only one blog/author', () => {
+    const listWithOneBlog = blogs.slice(0, 1)
+    const result = listHelper.mostBlogs(listWithOneBlog)
+
+    expect(result).toEqual({
+      author: 'Michael Chan',
+      blogs: 1
+    })
+  })
+
+  test('it returns 0 when no blogs are present', () => {
+    const emptyBlogList = []
+    const result = listHelper.mostBlogs(emptyBlogList)
+
+    expect(result).toBe(0)
+  })
+})
