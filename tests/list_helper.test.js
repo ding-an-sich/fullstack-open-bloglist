@@ -102,3 +102,31 @@ describe('most prolific author', () => {
     expect(result).toBe(0)
   })
 })
+
+describe('most voted author', () => {
+  test('returns the author with most likes', () => {
+    const result = listHelper.mostLikes(blogs)
+
+    expect(result).toEqual({
+      author: 'Edsger W. Dijkstra',
+      likes: 17
+    })
+  })
+
+  test('works with only one blog/author', () => {
+    const listWithOneBlog = blogs.slice(0, 1)
+    const result = listHelper.mostLikes(listWithOneBlog)
+
+    expect(result).toEqual({
+      author: 'Michael Chan',
+      likes: 7
+    })
+  })
+
+  test('it returns 0 when no blogs are present', () => {
+    const emptyBlogList = []
+    const result = listHelper.mostLikes(emptyBlogList)
+
+    expect(result).toBe(0)
+  })
+})

@@ -31,10 +31,35 @@ const mostBlogs = (blogs) => {
   const authorList = _.countBy(blogs, 'author')
   const reducer = (keyA, keyB) => (authorList[keyA] > authorList[keyB] ? keyA : keyB)
   const mostProlificAuthor = Object.keys(authorList).reduce(reducer, 0)
+
   if (mostProlificAuthor === 0) {
     return mostProlificAuthor
   }
   return { author: mostProlificAuthor, blogs: authorList[mostProlificAuthor] }
+}
+
+const mostLikes = (blogs) => {
+  const authorList = _.groupBy(blogs, 'author')
+  const authorsAndVotes = []
+
+  Object.keys(authorList).forEach((author) => {
+    let likes = 0
+    authorList[author].forEach((blog) => {
+      likes += blog.likes
+    })
+
+    const authorObject = {}
+
+    authorObject.author = author
+    authorObject.likes = likes
+    authorsAndVotes.push(authorObject)
+  })
+  const mostVotedAuthor = _.maxBy(authorsAndVotes, 'likes')
+  if (mostVotedAuthor) {
+    return mostVotedAuthor
+  }
+
+  return 0
 }
 
 module.exports = {
@@ -43,5 +68,6 @@ module.exports = {
   dummy,
   totalLikes,
   favoriteBlog,
-  mostBlogs
+  mostBlogs,
+  mostLikes
 }
