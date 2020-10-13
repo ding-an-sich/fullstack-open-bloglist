@@ -121,6 +121,50 @@ describe('when deleting a blog', () => {
   })
 })
 
+describe('when updating a blog', () => {
+  test('sending a new likes number updates the corresponding blog likes', async () => {
+    const newLikes = { likes: 45 }
+    let response = await api.get('/api/blogs')
+
+    await api
+      .put(`/api/blogs/${response.body[0].id}`)
+      .send(newLikes)
+      .expect(200)
+
+    response = await api.get('/api/blogs')
+    const updatedBlog = response.body[0]
+    expect(updatedBlog.likes).toBe(45)
+  })
+
+  test('sending malformatted likes returns an exception', async () => {
+    const newLikes = { likes: 'banana' }
+    let response = await api.get('/api/blogs')
+
+    await api
+      .put(`/api/blogs/${response.body[0].id}`)
+      .send(newLikes)
+      .expect(400)
+
+    response = await api.get('/api/blogs')
+    const updatedBlog = response.body[0]
+    expect(updatedBlog.likes).not.toBe('banana')
+  })
+
+  test('sending negative values as likes returns an exception', async () => {
+    const newLikes = { likes: -30 }
+    let response = await api.get('/api/blogs')
+
+    await api
+      .put(`/api/blogs/${response.body[0].id}`)
+      .send(newLikes)
+      .expect(400)
+
+    response = await api.get('/api/blogs')
+    const updatedBlog = response.body[0]
+    expect(updatedBlog.likes).not.toBe(-30)
+  })
+})
+
 afterAll(() => {
   mongoose.connection.close()
 })
