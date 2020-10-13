@@ -10,6 +10,12 @@ beforeEach(async () => {
   await User.deleteMany({})
 })
 
+const populateWithUsers = async (users) => {
+  const userObjects = users.map((user) => new User(user))
+  const promises = userObjects.map((userObject) => userObject.save())
+  await Promise.all(promises)
+}
+
 describe('when listing users', () => {
   test('initially returns an empty list', async () => {
     const response = await api
@@ -19,10 +25,7 @@ describe('when listing users', () => {
   })
 
   test('when populated, returns a list with added users', async () => {
-    const userObjects = mockUsers.map((user) => new User(user))
-    const promises = userObjects.map((userObject) => userObject.save())
-    await Promise.all(promises)
-
+    await populateWithUsers(mockUsers)
     const response = await api
       .get('/api/users')
       .expect(200)
@@ -56,6 +59,14 @@ describe('when creating a user', () => {
       .send(newUser)
     const createdUser = await User.findOne({ name: 'Vinicius' })
     expect(createdUser.username).toBe('vmrc')
+  })
+
+  test('trying to create a user without username fails', async () => {
+    const newUser = { name: 'Vinicius', password: '123456' }
+    await api
+      .post('/api/users')
+      .send(newUser)
+      .expect(400)
   })
 })
 
