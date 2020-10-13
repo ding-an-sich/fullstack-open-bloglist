@@ -48,6 +48,8 @@ describe('when creating a user', () => {
     const response = await api
       .post('/api/users')
       .send(newUser)
+      .expect(201)
+
     const savedUser = response.body
     expect(savedUser.id).toBeDefined()
   })
@@ -57,6 +59,8 @@ describe('when creating a user', () => {
     await api
       .post('/api/users')
       .send(newUser)
+      .expect(201)
+
     const createdUser = await User.findOne({ name: 'Vinicius' })
     expect(createdUser.username).toBe('vmrc')
   })
@@ -82,6 +86,28 @@ describe('when creating a user', () => {
 
     const response = await api.get('/api/users')
     expect(response.body.length).toBe(mockUsers.length)
+  })
+
+  test('trying to create a user without a password fails', async () => {
+    const newUser = { name: 'Vinicius', username: 'vmrc' }
+    await api
+      .post('/api/users')
+      .send(newUser)
+      .expect(400)
+
+    const response = await api.get('/api/users')
+    expect(response.body.length).toBe(0)
+  })
+
+  test('trying to create a user with a password that is too short fails', async () => {
+    const newUser = { name: 'Vinicius', username: 'vmrc', password: '12345' }
+    await api
+      .post('/api/users')
+      .send(newUser)
+      .expect(400)
+
+    const response = await api.get('/api/users')
+    expect(response.body.length).toBe(0)
   })
 })
 

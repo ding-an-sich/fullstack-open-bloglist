@@ -10,6 +10,10 @@ usersRouter.get('/', async (request, response) => {
 usersRouter.post('/', async (request, response, next) => {
   const { body } = request
 
+  if (!body.password || body.password.length < 6) {
+    return response.status(400).json({ error: 'a password is required and must be at least 6 characters long' })
+  }
+
   const saltRounds = 10
   const passwordHash = await bcrypt.hash(body.password, saltRounds)
 
@@ -20,9 +24,9 @@ usersRouter.post('/', async (request, response, next) => {
   })
   try {
     const savedUser = await user.save()
-    response.status(201).json(savedUser)
+    return response.status(201).json(savedUser)
   } catch (exception) {
-    next(exception)
+    return next(exception)
   }
 })
 
