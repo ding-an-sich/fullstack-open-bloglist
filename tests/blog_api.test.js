@@ -38,7 +38,7 @@ test('blogs are returned as JSON', async () => {
 
 test('all the blogs are returned', async () => {
   const response = await api.get('/api/blogs')
-  expect(response.body).toHaveLength(helper.initialBlogs.length)
+  expect(response.body).toHaveLength(initialBlogs.length)
 })
 
 test('unique identifiers are returned as \'id\'', async () => {
@@ -62,7 +62,7 @@ test('a blog can be added', async () => {
 
   const response = await api.get('/api/blogs')
 
-  expect(response.body).toHaveLength(helper.initialBlogs.length + 1)
+  expect(response.body).toHaveLength(initialBlogs.length + 1)
 })
 
 test('a blog added without likes will default to 0', async () => {
@@ -78,6 +78,21 @@ test('a blog added without likes will default to 0', async () => {
 
   const response = await api.get('/api/blogs')
   expect(response.body[initialBlogs.length].likes).toBe(0)
+})
+
+test('a blog added without title and/or url will not be added', async () => {
+  const newBlog = {
+    author: 'vmrc',
+    likes: 42
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(400)
+
+  const response = await api.get('/api/blogs')
+  expect(response.body).toHaveLength(initialBlogs.length)
 })
 
 afterAll(() => {
