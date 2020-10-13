@@ -1,7 +1,6 @@
 const mongoose = require('mongoose')
 const supertest = require('supertest')
 const app = require('../app')
-const helper = require('./test_helper')
 const Blog = require('../models/blog')
 const { initialBlogs } = require('./test_helper')
 
@@ -10,7 +9,7 @@ const api = supertest(app)
 beforeEach(async () => {
   await Blog.deleteMany({})
 
-  const blogObjects = helper.initialBlogs.map((blog) => new Blog(blog))
+  const blogObjects = initialBlogs.map((blog) => new Blog(blog))
   const promises = blogObjects.map((blogObject) => blogObject.save())
   await Promise.all(promises)
 })
