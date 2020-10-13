@@ -29,7 +29,7 @@ describe('when listing users', () => {
     const response = await api
       .get('/api/users')
       .expect(200)
-    expect(response.body.length).toBe(2)
+    expect(response.body.length).toBe(mockUsers.length)
   })
 })
 
@@ -61,12 +61,27 @@ describe('when creating a user', () => {
     expect(createdUser.username).toBe('vmrc')
   })
 
-  test('trying to create a user without username fails', async () => {
+  test('trying to create a user without an username fails', async () => {
     const newUser = { name: 'Vinicius', password: '123456' }
     await api
       .post('/api/users')
       .send(newUser)
       .expect(400)
+
+    const response = await api.get('/api/users')
+    expect(response.body.length).toBe(0)
+  })
+
+  test('trying to create a user with an existing username fails', async () => {
+    await populateWithUsers(mockUsers)
+    const newUser = { name: 'Vinicius', username: 'vmrc', password: '123456' }
+    await api
+      .post('/api/users')
+      .send(newUser)
+      .expect(400)
+
+    const response = await api.get('/api/users')
+    expect(response.body.length).toBe(mockUsers.length)
   })
 })
 
