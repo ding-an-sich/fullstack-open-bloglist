@@ -3,6 +3,7 @@ const supertest = require('supertest')
 const app = require('../app')
 const helper = require('./test_helper')
 const Blog = require('../models/blog')
+const { initialBlogs } = require('./test_helper')
 
 const api = supertest(app)
 
@@ -62,6 +63,21 @@ test('a blog can be added', async () => {
   const response = await api.get('/api/blogs')
 
   expect(response.body).toHaveLength(helper.initialBlogs.length + 1)
+})
+
+test('a blog added without likes will default to 0', async () => {
+  const newBlog = {
+    title: 'I have nothing interesting to say',
+    author: 'vmrc',
+    url: 'www.piadinhasinfames.com.br',
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+
+  const response = await api.get('/api/blogs')
+  expect(response.body[initialBlogs.length].likes).toBe(0)
 })
 
 afterAll(() => {
