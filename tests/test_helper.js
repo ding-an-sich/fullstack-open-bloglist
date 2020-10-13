@@ -19,6 +19,16 @@ const initialBlogs = [
   }
 ]
 
+const mockUsers = [
+  {
+    name: 'Vinicius', username: 'vmrc', password: '123456'
+  },
+  {
+    name: 'Gabriela', username: 'gabi', password: '654321'
+  }
+]
+
 module.exports = {
-  initialBlogs
+  initialBlogs,
+  mockUsers
 }
