@@ -21,10 +21,18 @@ blogsRouter.get('/', async (request, response) => {
   response.json(blogs)
 })
 
-blogsRouter.post('/', async (request, response) => {
+blogsRouter.post('/', async (request, response, next) => {
   const { body } = request
   const token = getTokenFrom(request)
-  const decodedToken = jwt.verify(token, process.env.SECRET)
+  let decodedToken = null
+
+  try {
+    decodedToken = jwt.verify(token, process.env.SECRET)
+  } catch (exception) {
+    next(exception)
+    // Not sure if this is the best way of handling this error
+    return null
+  }
 
   if (!body.title || !body.url) {
     return response.status(400).json({ error: 'title or url missing' })

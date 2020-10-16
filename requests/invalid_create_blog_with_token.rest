@@ -1,0 +1,10 @@
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+Authorization: bearer banana
+
+{
+  "title": "My another authorized test blog",
+  "author": "vmrc",
+  "url": "www.piadasauthorized.com.br",
+  "likes": "32"
+}
