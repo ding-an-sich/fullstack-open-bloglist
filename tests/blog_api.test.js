@@ -97,6 +97,20 @@ describe('when adding a blog', () => {
     expect(response.body).toHaveLength(initialBlogs.length + 1)
   })
 
+  test('trying to add a blog without auth token will fail with 401', async () => {
+    const newBlog = {
+      title: 'I have nothing interesting to say',
+      author: 'vmrc',
+      url: 'www.piadinhasinfames.com.br',
+      likes: 0
+    }
+
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(401)
+  })
+
   test('a blog added without likes will default to 0', async () => {
     await populateWithUsers(mockUsers)
 
