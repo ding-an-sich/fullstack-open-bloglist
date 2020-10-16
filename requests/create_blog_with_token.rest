@@ -3,7 +3,7 @@ Content-Type: application/json
 Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InZtcmMiLCJpZCI6IjVmODllNzRmYjBmYjBjMTlkZDIyMTEzNCIsImlhdCI6MTYwMjg3NjI3Mn0.25OIrE4ghryHCWwpW0gUjjhAWdRR1BaZZF7l6Q-PoQ0
 
 {
-  "title": "My another authorized test blog",
+  "title": "My another middleware authorized test blog",
   "author": "vmrc",
   "url": "www.piadasauthorized.com.br",
   "likes": "32"

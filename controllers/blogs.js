@@ -4,18 +4,6 @@ const blogsRouter = require('express').Router()
 const Blog = require('../models/blog')
 const User = require('../models/user')
 
-// Authorization
-
-const getTokenFrom = (request) => {
-  const authorization = request.get('authorization')
-  if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
-    return authorization.substring(7)
-  }
-  return null
-}
-
-// Routing control
-
 blogsRouter.get('/', async (request, response) => {
   const blogs = await Blog.find({}).populate('user', { username: 1, name: 1 })
   response.json(blogs)
@@ -23,11 +11,10 @@ blogsRouter.get('/', async (request, response) => {
 
 blogsRouter.post('/', async (request, response, next) => {
   const { body } = request
-  const token = getTokenFrom(request)
   let decodedToken = null
 
   try {
-    decodedToken = jwt.verify(token, process.env.SECRET)
+    decodedToken = jwt.verify(request.token, process.env.SECRET)
   } catch (exception) {
     next(exception)
     // Not sure if this is the best way of handling this error
@@ -38,7 +25,7 @@ blogsRouter.post('/', async (request, response, next) => {
     return response.status(400).json({ error: 'title or url missing' })
   }
 
-  if (!token || !decodedToken.id) {
+  if (!decodedToken.id) {
     return response.status(401).json({ error: 'token missing or invalid' })
   }
 
