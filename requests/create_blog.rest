@@ -2,8 +2,8 @@ POST http://localhost:3003/api/blogs
 Content-Type: application/json
 
 {
-  "title": "My third test blog",
+  "title": "My ultimate test blog",
   "author": "vmrc",
   "url": "www.piadas.com.br",
-  "likes": 3
+  "likes": "3"
 }

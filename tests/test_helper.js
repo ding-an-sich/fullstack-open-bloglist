@@ -21,10 +21,10 @@ const initialBlogs = [
 
 const mockUsers = [
   {
-    name: 'Vinicius', username: 'vmrc', password: '123456'
+    _id: '5f89db75a201e30f3fbf0f44', name: 'Vinicius', username: 'vmrc', password: '123456', __v: 0
   },
   {
-    name: 'Gabriela', username: 'gabi', password: '654321'
+    _id: '5f89db75a201e30f3fbf0f45', name: 'Gabriela', username: 'gabi', password: '654321', __v: 0
   }
 ]
 
